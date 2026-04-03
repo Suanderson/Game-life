@@ -1,101 +1,145 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
 <head>
 <meta charset="UTF-8">
-<title>Rotina</title>
-</head>
+<title>Sistema Rotina</title>
 
+<style>
+body {
+  font-family: Arial;
+  background: #0f172a;
+  color: white;
+  text-align: center;
+}
+
+.container {
+  max-width: 400px;
+  margin: auto;
+}
+
+button {
+  padding: 10px;
+  margin: 5px;
+  width: 100%;
+  border: none;
+  background: #22c55e;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+input {
+  padding: 10px;
+  width: 100%;
+  margin: 5px;
+}
+</style>
+
+</head>
 <body>
 
-<h2>Login</h2>
-<input id="email">
-<input id="senha" type="password">
-<button onclick="logar()">Entrar</button>
+<div class="container" id="login">
+  <h2>Login</h2>
+  <input id="email" placeholder="Email">
+  <input id="senha" placeholder="Senha" type="password">
+  <button onclick="logar()">Entrar</button>
+</div>
 
-<div id="app" style="display:none">
+<div class="container" id="app" style="display:none">
+  <h2>Dashboard</h2>
+  <p id="pontos"></p>
+  <p id="km"></p>
 
-<h3 id="pontos"></h3>
-<h3 id="km"></h3>
+  <h3>Checklist</h3>
 
-<button onclick="t('cafe','alimentacao')">Café</button>
-<button onclick="t('almoco','alimentacao')">Almoço</button>
-<button onclick="t('jantar','alimentacao')">Jantar</button>
-<button onclick="t('sem_besteira','alimentacao')">Sem besteira</button>
+  <button onclick="tarefa('cafe','alimentacao')">Café</button>
+  <button onclick="tarefa('almoco','alimentacao')">Almoço</button>
+  <button onclick="tarefa('jantar','alimentacao')">Jantar</button>
+  <button onclick="tarefa('sem_besteira','alimentacao')">Sem besteira</button>
 
-<button onclick="t('calistenia','treino')">Calistenia</button>
-<button onclick="t('estudo','estudo')">Estudo</button>
+  <button onclick="tarefa('calistenia','treino')">Calistenia</button>
 
-<button onclick="t('quarto','casa')">Quarto</button>
-<button onclick="t('casa','casa')">Casa</button>
+  <button onclick="tarefa('estudo','estudo')">Estudo</button>
 
-<button onclick="t('trabalho','trabalho')">Trabalho</button>
-<button onclick="t('curso','curso')">Curso</button>
+  <button onclick="tarefa('quarto','casa')">Arrumar quarto</button>
+  <button onclick="tarefa('casa','casa')">Ajudar em casa</button>
 
-<br><br>
+  <button onclick="tarefa('trabalho','trabalho')">Trabalho</button>
+  <button onclick="tarefa('curso','curso')">Curso</button>
 
-<input id="kmInput" placeholder="KM">
-<button onclick="corrida()">Corrida</button>
-
+  <h3>Corrida</h3>
+  <input id="kmInput" placeholder="KM">
+  <button onclick="corrida()">Registrar Corrida</button>
 </div>
 
 <script>
-const API = "https://script.google.com/macros/s/AKfycbytly4uf2iEFEVYU-Nar8mzerHf9RT73kuuHwmM_ssESTy0TuJOevEus9W1cvoeaCBw7w/exec";
-let user = "";
+const API = "https://script.google.com/macros/s/AKfycbw-ZcG4LpYrb82BZUUsTQKACgR-R9ivA-IBStQhV5Qj1XegQh2wcX6EfmEjgMF6RJSnuQ/exec";
+let usuario = "";
 
 // LOGIN
 function logar() {
-  fetch(API + "?action=login", {
+  let email = document.getElementById("email").value;
+  let senha = document.getElementById("senha").value;
+
+  fetch(API, {
     method: "POST",
-    headers: {"Content-Type":"application/json"},
-    body: JSON.stringify({
-      email: email.value,
-      senha: senha.value
-    })
+    body: JSON.stringify({ func: "login", email, senha })
   })
-  .then(r=>r.json())
-  .then(d=>{
-    if(d.status=="ok"){
-      user = d.user;
-      app.style.display="block";
+  .then(r => r.json())
+  .then(d => {
+    if (d.status == "ok") {
+      usuario = d.user;
+      document.getElementById("login").style.display = "none";
+      document.getElementById("app").style.display = "block";
       atualizar();
-    } else alert("erro login");
+    } else {
+      alert("Erro no login");
+    }
   });
 }
 
 // TAREFA
-function t(nome, cat){
-  fetch(API+"?action=salvarTarefa",{
-    method:"POST",
-    headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({usuario:user,tarefa:nome,categoria:cat})
+function tarefa(nome, categoria) {
+  fetch(API, {
+    method: "POST",
+    body: JSON.stringify({
+      func: "salvarTarefa",
+      usuario,
+      tarefa: nome,
+      categoria
+    })
   })
-  .then(r=>r.json())
-  .then(d=>{
-    if(d.status=="bloqueado") alert("já fez hoje");
-    atualizar();
-  });
+  .then(() => atualizar());
 }
 
 // CORRIDA
-function corrida(){
-  fetch(API+"?action=registrarCorrida",{
-    method:"POST",
-    headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({usuario:user,km:kmInput.value})
-  }).then(()=>atualizar());
+function corrida() {
+  let km = document.getElementById("kmInput").value;
+
+  fetch(API, {
+    method: "POST",
+    body: JSON.stringify({
+      func: "registrarCorrida",
+      usuario,
+      km
+    })
+  })
+  .then(() => atualizar());
 }
 
-// DASHBOARD
-function atualizar(){
-  fetch(API+"?action=dashboard",{
-    method:"POST",
-    headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({usuario:user})
+// ATUALIZAR DASHBOARD
+function atualizar() {
+  fetch(API, {
+    method: "POST",
+    body: JSON.stringify({
+      func: "getDashboard",
+      usuario
+    })
   })
-  .then(r=>r.json())
-  .then(d=>{
-    pontos.innerText="Pontos: "+d.pontos;
-    km.innerText="KM Semana: "+d.km.semana;
+  .then(r => r.json())
+  .then(d => {
+    document.getElementById("pontos").innerText = "Pontos: " + d.pontos;
+    document.getElementById("km").innerText = "KM Semana: " + d.km.semana;
   });
 }
 </script>
