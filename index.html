@@ -1,787 +1,148 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<meta name="theme-color" content="#080810">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="ROTINA">
-<link rel="manifest" href="manifest.json">
-<title>ROTINA</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<title>Sistema Rotina</title>
+
 <style>
-:root {
-  --bg:    #080810;
-  --bg2:   #0d0d18;
-  --surf:  #16162a;
-  --surf2: #1e1e35;
-  --bdr:   rgba(255,255,255,0.07);
-  --bdr2:  rgba(255,255,255,0.13);
-  --txt:   #eeeeff;
-  --txt2:  #7777aa;
-  --txt3:  rgba(80,80,120,0.5);
-  --acc:   #6d28d9;
-  --acc2:  #a855f7;
-  --gold:  #f59e0b;
-  --gold2: #fcd34d;
-  --grn:   #059669;
-  --grn2:  #34d399;
-  --red:   #ef4444;
-  --blu:   #3b82f6;
-  --cyn:   #06b6d4;
-  --org:   #f97316;
-  --r:     10px;
-  --r2:    18px;
+body {
+  font-family: Arial;
+  background: #0f172a;
+  color: white;
+  text-align: center;
 }
-*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html,body{height:100%;font-family:'Syne',sans-serif;background:var(--bg);color:var(--txt);overflow-x:hidden}
-body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 70% 50% at 15% -5%,rgba(109,40,217,.18) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 85% 105%,rgba(6,182,212,.1) 0%,transparent 60%);pointer-events:none;z-index:0}
-::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--surf2);border-radius:99px}
-button,input{font-family:'Syne',sans-serif}
 
-/* TELAS */
-.screen{display:none;min-height:100vh;position:relative;z-index:1;flex-direction:column}
-.screen.active{display:flex}
+.container {
+  max-width: 400px;
+  margin: auto;
+}
 
-/* LOGIN */
-#s-login{align-items:center;justify-content:center;padding:20px}
-.login-wrap{width:100%;max-width:360px}
-.login-logo{text-align:center;margin-bottom:32px}
-.logo-box{width:64px;height:64px;background:linear-gradient(135deg,var(--acc),var(--cyn));border-radius:18px;display:inline-flex;align-items:center;justify-content:center;font-size:28px;margin-bottom:12px;box-shadow:0 0 48px rgba(109,40,217,.45);animation:pulse 3s ease-in-out infinite}
-@keyframes pulse{0%,100%{box-shadow:0 0 48px rgba(109,40,217,.45)}50%{box-shadow:0 0 72px rgba(109,40,217,.7)}}
-.logo-title{font-size:24px;font-weight:800;letter-spacing:8px;background:linear-gradient(90deg,var(--txt),var(--acc2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.logo-sub{color:var(--txt2);font-size:11px;margin-top:4px;font-family:'JetBrains Mono',monospace;letter-spacing:2px}
-.card{background:var(--surf);border:1px solid var(--bdr2);border-radius:var(--r2);padding:28px 24px;box-shadow:0 24px 64px rgba(0,0,0,.6)}
-.fg{margin-bottom:14px}
-.fg label{display:block;font-size:10px;letter-spacing:2px;color:var(--txt2);margin-bottom:7px;font-weight:700;text-transform:uppercase}
-.fg input{width:100%;padding:13px 15px;background:var(--bg2);border:1px solid var(--bdr2);border-radius:var(--r);color:var(--txt);font-family:'JetBrains Mono',monospace;font-size:14px;outline:none;transition:border-color .2s}
-.fg input:focus{border-color:var(--acc2)}
-.fg input::placeholder{color:var(--txt3)}
-.btn{width:100%;padding:14px;margin-top:6px;background:linear-gradient(135deg,var(--acc),var(--acc2));border:none;border-radius:var(--r);color:#fff;font-size:14px;font-weight:700;letter-spacing:2px;cursor:pointer;transition:all .2s}
-.btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(109,40,217,.4)}
-.btn:active{transform:translateY(0)}
-.btn.sec{background:var(--surf2);border:1px solid var(--bdr2);color:var(--txt2)}
-.btn.sec:hover{border-color:var(--acc2);color:var(--acc2);box-shadow:none;transform:none}
-.btn.danger{background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.3);color:#fca5a5}
-.btn.sm{padding:9px 16px;font-size:11px;width:auto;letter-spacing:1px}
-.err{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);border-radius:var(--r);padding:10px 14px;font-size:12px;color:#fca5a5;margin-top:10px;display:none}
-.ok-msg{background:rgba(5,150,105,.1);border:1px solid rgba(5,150,105,.3);border-radius:var(--r);padding:10px 14px;font-size:12px;color:#6ee7b7;margin-top:10px;display:none}
+button {
+  padding: 10px;
+  margin: 5px;
+  width: 100%;
+  border: none;
+  background: #22c55e;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
 
-/* BOTTOM NAV */
-.bnav{position:fixed;bottom:0;left:0;right:0;height:66px;background:rgba(8,8,16,.97);backdrop-filter:blur(20px);border-top:1px solid var(--bdr);display:none;align-items:center;justify-content:space-around;z-index:100;padding-bottom:env(safe-area-inset-bottom)}
-.bnav.show{display:flex}
-.nb{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:8px 4px;border:none;background:none;color:var(--txt2);transition:color .2s}
-.nb.active{color:var(--acc2)}
-.nb .ni{font-size:20px;transition:transform .2s}
-.nb .nl{font-size:9px;letter-spacing:1.5px;font-weight:700;text-transform:uppercase}
-.nb.active .ni{transform:scale(1.2)}
-
-/* APP LAYOUT */
-.app-body{flex:1;padding:0 15px 80px;overflow-y:auto}
-.app-hdr{padding:18px 0 6px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:linear-gradient(to bottom,var(--bg) 80%,transparent);z-index:10}
-.hdr-title{font-size:12px;letter-spacing:4px;font-weight:700;text-transform:uppercase;color:var(--txt2)}
-.avatar{width:32px;height:32px;background:linear-gradient(135deg,var(--acc),var(--cyn));border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;cursor:pointer}
-.sec-lbl{font-size:10px;letter-spacing:3px;color:var(--txt2);font-weight:700;text-transform:uppercase;margin:16px 0 10px}
-
-/* DASHBOARD */
-.dash-greet{margin:4px 0 16px}
-.dash-greet p{color:var(--txt2);font-size:11px;font-family:'JetBrains Mono',monospace}
-.dash-greet h3{font-size:22px;font-weight:800;margin-top:2px}
-.dash-greet h3 span{color:var(--acc2)}
-
-.prog-card{background:var(--surf);border:1px solid var(--bdr);border-radius:var(--r2);padding:18px;margin-bottom:10px;position:relative;overflow:hidden}
-.prog-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--acc),var(--cyn))}
-.pc-top{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:12px}
-.pc-lbl{font-size:10px;letter-spacing:2px;color:var(--txt2);font-weight:700;text-transform:uppercase}
-.pc-pts{font-size:11px;color:var(--txt2);margin-top:3px;font-family:'JetBrains Mono',monospace}
-.pc-pct{font-family:'JetBrains Mono',monospace;font-size:32px;font-weight:700;color:var(--acc2);line-height:1}
-.prog-track{height:7px;background:var(--bg2);border-radius:99px;overflow:hidden}
-.prog-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--acc),var(--acc2),var(--cyn));transition:width .7s cubic-bezier(.34,1.56,.64,1)}
-
-.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
-.stat{background:var(--surf);border:1px solid var(--bdr);border-radius:var(--r2);padding:14px 13px}
-.stat .si{font-size:18px;margin-bottom:5px}
-.stat .sv{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700;line-height:1;margin-bottom:3px}
-.stat .sl{font-size:9px;color:var(--txt2);letter-spacing:1.5px;font-weight:700;text-transform:uppercase}
-.stat.gold .sv{color:var(--gold2)}
-.stat.purple .sv{color:#c084fc}
-.stat.game .sv{color:var(--grn2)}
-.stat.run .sv{color:var(--cyn)}
-
-.streak-banner{background:linear-gradient(135deg,rgba(249,115,22,.12),rgba(245,158,11,.08));border:1px solid rgba(249,115,22,.22);border-radius:var(--r2);padding:14px 16px;display:flex;align-items:center;gap:12px;margin-bottom:10px}
-.sb-icon{font-size:32px}
-.sb-info h4{font-size:17px;font-weight:800;color:var(--org)}
-.sb-info p{font-size:11px;color:var(--txt2);font-family:'JetBrains Mono',monospace;margin-top:1px}
-
-.fds-warn{background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.18);border-radius:var(--r);padding:10px 14px;font-size:12px;color:var(--gold2);margin-top:10px;display:none}
-
-/* CHECKLIST */
-.cl-sec{margin-bottom:18px}
-.cl-hdr{display:flex;align-items:center;gap:9px;padding:10px 13px;background:var(--bg2);border-radius:var(--r);cursor:pointer;user-select:none;border:1px solid var(--bdr);transition:border-color .2s}
-.cl-hdr:hover{border-color:var(--bdr2)}
-.cl-hi{font-size:15px}
-.cl-ht{font-size:10px;letter-spacing:2px;font-weight:700;text-transform:uppercase;flex:1}
-.cl-hp{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--gold2)}
-.cl-hc{font-size:10px;color:var(--txt2);font-family:'JetBrains Mono',monospace}
-.cl-arr{color:var(--txt2);font-size:10px;transition:transform .2s}
-.cl-sec.collapsed .cl-arr{transform:rotate(-90deg)}
-.cl-sec.collapsed .cl-items{display:none}
-.cl-items{display:flex;flex-direction:column;gap:5px;padding-top:5px}
-
-.task{display:flex;align-items:center;gap:11px;padding:12px 13px;background:var(--surf);border:1px solid var(--bdr);border-radius:var(--r);cursor:pointer;transition:all .22s;position:relative;overflow:hidden}
-.task::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:transparent;transition:background .2s}
-.task.done{background:rgba(5,150,105,.06);border-color:rgba(5,150,105,.2)}
-.task.done::before{background:var(--grn2)}
-.task:active{transform:scale(.99)}
-.chk{width:20px;height:20px;border:2px solid var(--bdr2);border-radius:5px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s;font-size:11px}
-.task.done .chk{background:var(--grn);border-color:var(--grn);color:#fff}
-.t-info{flex:1;min-width:0}
-.t-name{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.task.done .t-name{color:var(--txt2);text-decoration:line-through}
-.t-meta{font-size:10px;color:var(--txt3);margin-top:1px;font-family:'JetBrains Mono',monospace}
-.t-pts{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--gold);background:rgba(245,158,11,.1);padding:3px 8px;border-radius:99px;flex-shrink:0}
-.task.done .t-pts{color:var(--txt2);background:none}
-.t-pts.zero{color:var(--txt2);background:none}
-
-.km-wrap{background:var(--surf);border:1px solid var(--bdr);border-radius:var(--r);padding:10px 12px;margin-top:4px;display:none}
-.km-label{font-size:10px;color:var(--txt2);letter-spacing:1px;font-weight:700;text-transform:uppercase;margin-bottom:7px}
-.km-row{display:flex;gap:8px}
-.km-in{flex:1;padding:9px 12px;background:var(--bg2);border:1px solid var(--bdr2);border-radius:8px;color:var(--txt);font-family:'JetBrains Mono',monospace;font-size:14px;outline:none;transition:border-color .2s}
-.km-in:focus{border-color:var(--cyn)}
-.km-ok{padding:9px 16px;background:linear-gradient(135deg,var(--cyn),var(--blu));border:none;border-radius:8px;color:#fff;font-weight:700;font-size:12px;cursor:pointer;letter-spacing:1px}
-
-.ciclos-wrap{background:var(--surf);border:1px solid var(--bdr);border-radius:var(--r);padding:12px 13px}
-.ciclos-label{font-size:10px;color:var(--txt2);letter-spacing:1px;font-weight:700;text-transform:uppercase}
-.ciclos-row{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
-.cdot{width:36px;height:36px;border-radius:8px;border:2px solid var(--bdr2);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--txt2);cursor:pointer;transition:all .2s;font-family:'JetBrains Mono',monospace}
-.cdot.on{background:linear-gradient(135deg,var(--acc),var(--acc2));border-color:transparent;color:#fff;transform:scale(1.05)}
-.ciclo-info{font-size:10px;color:var(--txt2);margin-top:7px;font-family:'JetBrains Mono',monospace}
-
-/* CONQUISTAS */
-.ach-header{background:var(--surf);border:1px solid var(--bdr);border-radius:var(--r2);padding:16px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between}
-.ach-big{font-family:'JetBrains Mono',monospace;font-size:26px;font-weight:700;color:var(--gold2);text-align:right}
-.ach-small{font-size:10px;color:var(--txt2);display:block;letter-spacing:1.5px;text-transform:uppercase;margin-top:1px}
-.ach-pbar{height:4px;background:var(--bg2);border-radius:99px;overflow:hidden;margin-top:8px;width:90px}
-.ach-pfill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--gold),var(--gold2));transition:width .6s}
-.ach-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.ach-cat{font-size:10px;letter-spacing:2px;color:var(--acc2);font-weight:700;text-transform:uppercase;margin:14px 0 8px;grid-column:1/-1}
-.ach-card{background:var(--surf);border:1px solid var(--bdr);border-radius:var(--r2);padding:14px 12px;text-align:center;position:relative;overflow:hidden;transition:border-color .2s}
-.ach-card.on{border-color:rgba(245,158,11,.3);background:rgba(245,158,11,.04)}
-.ach-icon{font-size:28px;margin-bottom:6px;filter:grayscale(.8)}
-.ach-card.on .ach-icon{filter:none}
-.ach-name{font-size:11px;font-weight:700;margin-bottom:3px;line-height:1.3}
-.ach-desc{font-size:9px;color:var(--txt2);font-family:'JetBrains Mono',monospace}
-.ach-lock{position:absolute;inset:0;background:rgba(8,8,16,.55);display:flex;align-items:center;justify-content:center;font-size:16px;border-radius:var(--r2)}
-.ach-card.on .ach-lock{display:none}
-.ach-badge{position:absolute;top:6px;right:6px;width:16px;height:16px;border-radius:99px;background:var(--gold);color:var(--bg);font-size:8px;font-weight:700;display:flex;align-items:center;justify-content:center}
-
-/* HISTÓRICO */
-.hist-day{background:var(--surf);border:1px solid var(--bdr);border-radius:var(--r2);margin-bottom:8px;overflow:hidden}
-.hist-hdr{display:flex;justify-content:space-between;align-items:center;padding:13px 15px;cursor:pointer}
-.hist-date{font-size:12px;font-weight:700}
-.hist-km{font-size:10px;color:var(--cyn);font-family:'JetBrains Mono',monospace;margin-top:2px}
-.hist-pts{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--gold2);font-weight:700;text-align:right}
-.hist-qtd{font-size:10px;color:var(--txt2);margin-top:2px;text-align:right}
-.hist-tags{padding:0 15px 13px;display:none;flex-wrap:wrap;gap:5px}
-.hist-day.open .hist-tags{display:flex}
-.hist-tag{padding:3px 9px;background:var(--bg2);border-radius:99px;font-size:10px;color:var(--txt2);font-family:'JetBrains Mono',monospace;border:1px solid var(--bdr)}
-
-/* CONFIGURAÇÕES */
-.profile-card{background:linear-gradient(135deg,rgba(109,40,217,.12),rgba(6,182,212,.08));border:1px solid rgba(109,40,217,.2);border-radius:var(--r2);padding:18px;display:flex;align-items:center;gap:13px;margin-bottom:12px}
-.profile-av{width:48px;height:48px;border-radius:13px;background:linear-gradient(135deg,var(--acc),var(--cyn));display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;flex-shrink:0}
-.profile-nome{font-size:16px;font-weight:800}
-.profile-email{font-size:11px;color:var(--txt2);font-family:'JetBrains Mono',monospace;margin-top:2px}
-.cfg-box{background:var(--surf);border:1px solid var(--bdr);border-radius:var(--r2);margin-bottom:10px;overflow:hidden}
-.cfg-row{display:flex;align-items:center;justify-content:space-between;padding:15px 16px;border-bottom:1px solid var(--bdr)}
-.cfg-row:last-child{border-bottom:none}
-.cfg-lbl{font-size:13px;font-weight:600}
-.cfg-sub{font-size:10px;color:var(--txt2);margin-top:2px;font-family:'JetBrains Mono',monospace}
-.cfg-nome-col{padding:14px 16px;display:flex;flex-direction:column;gap:8px}
-.cfg-input{width:100%;padding:10px 13px;background:var(--bg2);border:1px solid var(--bdr2);border-radius:var(--r);color:var(--txt);font-family:'JetBrains Mono',monospace;font-size:14px;outline:none;transition:border-color .2s}
-.cfg-input:focus{border-color:var(--acc2)}
-.toggle{width:42px;height:23px;background:var(--bg2);border-radius:99px;position:relative;cursor:pointer;transition:background .2s;border:1px solid var(--bdr2);flex-shrink:0}
-.toggle.on{background:var(--acc);border-color:var(--acc)}
-.toggle::after{content:'';position:absolute;width:17px;height:17px;border-radius:99px;background:#fff;top:2px;left:2px;transition:transform .2s}
-.toggle.on::after{transform:translateX(19px)}
-
-/* TOAST */
-.toast{position:fixed;top:18px;left:50%;transform:translateX(-50%) translateY(-90px);background:var(--surf2);border:1px solid var(--bdr2);border-radius:var(--r2);padding:11px 18px;display:flex;align-items:center;gap:10px;z-index:999;min-width:230px;max-width:320px;transition:transform .35s cubic-bezier(.34,1.56,.64,1);box-shadow:0 12px 40px rgba(0,0,0,.6)}
-.toast.show{transform:translateX(-50%) translateY(0)}
-.toast-icon{font-size:20px}
-.toast-title{font-size:13px;font-weight:700}
-.toast-msg{font-size:11px;color:var(--txt2);margin-top:1px;font-family:'JetBrains Mono',monospace}
-.toast.gold{border-color:rgba(245,158,11,.4);background:rgba(245,158,11,.08)}
-.toast.green{border-color:rgba(5,150,105,.4);background:rgba(5,150,105,.08)}
-.toast.red{border-color:rgba(239,68,68,.4);background:rgba(239,68,68,.08)}
-
-/* LOADER */
-.loader{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:200;flex-direction:column;gap:14px}
-.spin{width:36px;height:36px;border-radius:99px;border:3px solid var(--bdr2);border-top-color:var(--acc2);animation:spin .7s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
-.spin-txt{font-size:10px;letter-spacing:3px;color:var(--txt2);text-transform:uppercase;font-weight:700}
+input {
+  padding: 10px;
+  width: 100%;
+  margin: 5px;
+}
 </style>
+
 </head>
 <body>
 
-<!-- LOADER -->
-<div class="loader" id="loader">
-  <div class="spin"></div>
-  <div class="spin-txt" id="loader-txt">Carregando...</div>
+<div class="container" id="login">
+  <h2>Login</h2>
+  <input id="email" placeholder="Email">
+  <input id="senha" placeholder="Senha" type="password">
+  <button onclick="logar()">Entrar</button>
 </div>
 
-<!-- TOAST -->
-<div class="toast" id="toast">
-  <div class="toast-icon" id="t-icon">✅</div>
-  <div>
-    <div class="toast-title" id="t-title">Título</div>
-    <div class="toast-msg" id="t-msg">Mensagem</div>
-  </div>
-</div>
+<div class="container" id="app" style="display:none">
+  <h2>Dashboard</h2>
+  <p id="pontos"></p>
+  <p id="km"></p>
 
-<!-- ════ LOGIN ════ -->
-<div class="screen active" id="s-login">
-  <div class="login-wrap">
-    <div class="login-logo">
-      <div class="logo-box">⚡</div>
-      <div class="logo-title">ROTINA</div>
-      <div class="logo-sub">sistema de evolução</div>
-    </div>
-    <div class="card">
-      <div class="fg">
-        <label>Email</label>
-        <input type="email" id="l-email" placeholder="seu@email.com" autocomplete="email">
-      </div>
-      <div class="fg">
-        <label>Senha</label>
-        <input type="password" id="l-senha" placeholder="••••••••" autocomplete="current-password">
-      </div>
-      <button class="btn" id="btn-login">ENTRAR</button>
-      <div class="err" id="l-err"></div>
-    </div>
-  </div>
-</div>
+  <h3>Checklist</h3>
 
-<!-- ════ DASHBOARD ════ -->
-<div class="screen" id="s-dash">
-  <div class="app-body">
-    <div class="app-hdr">
-      <div class="hdr-title">Dashboard</div>
-      <div class="avatar" id="dash-av">?</div>
-    </div>
-    <div class="dash-greet">
-      <p>Hoje, <span id="dash-data"></span></p>
-      <h3>Olá, <span id="dash-nome">—</span> 👋</h3>
-    </div>
-    <div class="prog-card">
-      <div class="pc-top">
-        <div>
-          <div class="pc-lbl">Progresso do Dia</div>
-          <div class="pc-pts" id="dash-pts-lbl">0 pts hoje</div>
-        </div>
-        <div class="pc-pct" id="dash-pct">0%</div>
-      </div>
-      <div class="prog-track"><div class="prog-fill" id="dash-bar" style="width:0%"></div></div>
-    </div>
-    <div class="streak-banner">
-      <div class="sb-icon">🔥</div>
-      <div class="sb-info">
-        <h4 id="streak-val">0 dias</h4>
-        <p id="streak-msg">Comece sua sequência hoje!</p>
-      </div>
-    </div>
-    <div class="stats-grid">
-      <div class="stat gold"><div class="si">⭐</div><div class="sv" id="s-pts-dia">0</div><div class="sl">Pts Hoje</div></div>
-      <div class="stat purple"><div class="si">🏅</div><div class="sv" id="s-pts-sem">0</div><div class="sl">Pts Semana</div></div>
-      <div class="stat game"><div class="si">🎮</div><div class="sv" id="s-jogo">0h</div><div class="sl">Jogo Semana</div></div>
-      <div class="stat run"><div class="si">🏃</div><div class="sv" id="s-km">0km</div><div class="sl">KM Semana</div></div>
-    </div>
-    <div class="fds-warn" id="fds-warn">🌤️ <b>Fim de semana</b> — Pontos valem metade, streak não quebra!</div>
-  </div>
-</div>
+  <button onclick="tarefa('cafe','alimentacao')">Café</button>
+  <button onclick="tarefa('almoco','alimentacao')">Almoço</button>
+  <button onclick="tarefa('jantar','alimentacao')">Jantar</button>
+  <button onclick="tarefa('sem_besteira','alimentacao')">Sem besteira</button>
 
-<!-- ════ CHECKLIST ════ -->
-<div class="screen" id="s-checklist">
-  <div class="app-body">
-    <div class="app-hdr">
-      <div class="hdr-title">Checklist</div>
-      <div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--gold2)" id="cl-total">0 pts</div>
-    </div>
-    <div id="cl-container"></div>
-  </div>
-</div>
+  <button onclick="tarefa('calistenia','treino')">Calistenia</button>
 
-<!-- ════ CONQUISTAS ════ -->
-<div class="screen" id="s-conquistas">
-  <div class="app-body">
-    <div class="app-hdr"><div class="hdr-title">Conquistas</div></div>
-    <div class="ach-header">
-      <div>
-        <div style="font-size:13px;font-weight:700">Sua Coleção</div>
-        <div style="font-size:11px;color:var(--txt2);margin-top:3px;font-family:'JetBrains Mono',monospace" id="ach-sub">Complete tarefas!</div>
-      </div>
-      <div>
-        <div class="ach-big" id="ach-pct">0%</div>
-        <span class="ach-small" id="ach-count">0 / 18</span>
-        <div class="ach-pbar"><div class="ach-pfill" id="ach-pfill" style="width:0%"></div></div>
-      </div>
-    </div>
-    <div class="ach-grid" id="ach-grid"></div>
-  </div>
-</div>
+  <button onclick="tarefa('estudo','estudo')">Estudo</button>
 
-<!-- ════ HISTÓRICO ════ -->
-<div class="screen" id="s-historico">
-  <div class="app-body">
-    <div class="app-hdr"><div class="hdr-title">Histórico</div></div>
-    <div id="hist-container"></div>
-  </div>
-</div>
+  <button onclick="tarefa('quarto','casa')">Arrumar quarto</button>
+  <button onclick="tarefa('casa','casa')">Ajudar em casa</button>
 
-<!-- ════ CONFIG ════ -->
-<div class="screen" id="s-config">
-  <div class="app-body">
-    <div class="app-hdr"><div class="hdr-title">Configurações</div></div>
-    <div class="profile-card">
-      <div class="profile-av" id="cfg-av">?</div>
-      <div>
-        <div class="profile-nome" id="cfg-nome-d">—</div>
-        <div class="profile-email" id="cfg-email-d">—</div>
-      </div>
-    </div>
-    <div class="sec-lbl">PERFIL</div>
-    <div class="cfg-box">
-      <div class="cfg-nome-col">
-        <label style="font-size:10px;letter-spacing:2px;color:var(--txt2);font-weight:700;text-transform:uppercase">Nome de exibição</label>
-        <input class="cfg-input" id="cfg-nome-in" placeholder="Seu nome">
-        <button class="btn sm" id="btn-salvar-nome" style="align-self:flex-start">SALVAR</button>
-        <div class="ok-msg" id="cfg-ok">Nome atualizado! ✓</div>
-      </div>
-    </div>
-    <div class="sec-lbl">NOTIFICAÇÕES</div>
-    <div class="cfg-box">
-      <div class="cfg-row">
-        <div><div class="cfg-lbl">Lembretes diários</div><div class="cfg-sub">Notificações no celular</div></div>
-        <button class="toggle" id="tog-notif"></button>
-      </div>
-    </div>
-    <div class="sec-lbl">CONTA</div>
-    <button class="btn danger" id="btn-logout">SAIR DA CONTA</button>
-  </div>
-</div>
+  <button onclick="tarefa('trabalho','trabalho')">Trabalho</button>
+  <button onclick="tarefa('curso','curso')">Curso</button>
 
-<!-- BOTTOM NAV -->
-<nav class="bnav" id="bnav">
-  <button class="nb active" data-s="dash" onclick="nav('dash')"><span class="ni">🏠</span><span class="nl">Início</span></button>
-  <button class="nb" data-s="checklist" onclick="nav('checklist')"><span class="ni">✅</span><span class="nl">Tarefas</span></button>
-  <button class="nb" data-s="conquistas" onclick="nav('conquistas')"><span class="ni">🏆</span><span class="nl">Troféus</span></button>
-  <button class="nb" data-s="historico" onclick="nav('historico')"><span class="ni">📊</span><span class="nl">Histórico</span></button>
-  <button class="nb" data-s="config" onclick="nav('config')"><span class="ni">⚙️</span><span class="nl">Config</span></button>
-</nav>
+  <h3>Corrida</h3>
+  <input id="kmInput" placeholder="KM">
+  <button onclick="corrida()">Registrar Corrida</button>
+</div>
 
 <script>
-// ═══════════════════════════════════
-//  API
-// ═══════════════════════════════════
-const API = 'https://script.google.com/macros/s/AKfycby6un-beejBpbwVqx_GNXD6ysfJdJecMBfQOCySeG7fcYK2OpvqRUz1etUfFVim3mSedA/exec';
+const API = "https://script.google.com/macros/s/AKfycbwaCtymILfdqa5OpShHs0BPZF7vjvwmoczzfk8y6kUWxuHGlepTELQfVj4u-FThlC6Y4Q/exec";
+let usuario = "";
 
-const S = {
-  token: localStorage.getItem('r_token'),
-  userId: localStorage.getItem('r_uid'),
-  nome: localStorage.getItem('r_nome') || '',
-  email: localStorage.getItem('r_email') || '',
-  tarefas: new Set(),
-  ciclos: 0
-};
+// LOGIN
+function logar() {
+  let email = document.getElementById("email").value;
+  let senha = document.getElementById("senha").value;
 
-async function api(action, extra = {}) {
-  try {
-    const r = await fetch(API, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action, token: S.token, ...extra })
-    });
-    return await r.json();
-  } catch (e) {
-    return { ok: false, erro: 'Sem conexão' };
-  }
-}
-
-// ═══════════════════════════════════
-//  LOADER / TOAST
-// ═══════════════════════════════════
-function loader(txt) { document.getElementById('loader-txt').textContent = txt || 'Carregando...'; document.getElementById('loader').style.display = 'flex'; }
-function hideLoader() { document.getElementById('loader').style.display = 'none'; }
-
-let _tt;
-function toast(icon, title, msg, type = '') {
-  const el = document.getElementById('toast');
-  document.getElementById('t-icon').textContent = icon;
-  document.getElementById('t-title').textContent = title;
-  document.getElementById('t-msg').textContent = msg;
-  el.className = 'toast show ' + type;
-  clearTimeout(_tt);
-  _tt = setTimeout(() => el.classList.remove('show'), 3000);
-}
-
-// ═══════════════════════════════════
-//  NAV
-// ═══════════════════════════════════
-function nav(name) {
-  ['dash','checklist','conquistas','historico','config'].forEach(s => {
-    document.getElementById('s-' + s).classList.toggle('active', s === name);
-  });
-  document.querySelectorAll('.nb').forEach(b => b.classList.toggle('active', b.dataset.s === name));
-  if (name === 'dash')       loadDash();
-  if (name === 'checklist')  loadChecklist();
-  if (name === 'conquistas') loadConquistas();
-  if (name === 'historico')  loadHistorico();
-  if (name === 'config')     loadConfig();
-}
-
-// ═══════════════════════════════════
-//  LOGIN
-// ═══════════════════════════════════
-document.getElementById('btn-login').onclick = async () => {
-  const email = document.getElementById('l-email').value.trim();
-  const senha = document.getElementById('l-senha').value;
-  const errEl = document.getElementById('l-err');
-  errEl.style.display = 'none';
-  if (!email || !senha) { errEl.textContent = 'Preencha email e senha'; errEl.style.display = 'block'; return; }
-  loader('Entrando...');
-  const d = await api('login', { email, senha });
-  hideLoader();
-  if (!d.ok) { errEl.textContent = d.erro; errEl.style.display = 'block'; return; }
-  S.token = d.token; S.userId = d.userId; S.nome = d.nome; S.email = email;
-  localStorage.setItem('r_token', d.token);
-  localStorage.setItem('r_uid', d.userId);
-  localStorage.setItem('r_nome', d.nome);
-  localStorage.setItem('r_email', email);
-  iniciarApp();
-};
-
-document.getElementById('l-senha').addEventListener('keydown', e => { if (e.key === 'Enter') document.getElementById('btn-login').click(); });
-
-document.getElementById('btn-logout').onclick = async () => {
-  loader('Saindo...');
-  await api('logout');
-  hideLoader();
-  localStorage.clear();
-  location.reload();
-};
-
-function iniciarApp() {
-  document.getElementById('s-login').classList.remove('active');
-  document.getElementById('bnav').classList.add('show');
-  nav('dash');
-  if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(() => {});
-}
-
-// ═══════════════════════════════════
-//  DASHBOARD
-// ═══════════════════════════════════
-async function loadDash() {
-  const d = await api('getDashboard');
-  if (!d.ok) return;
-
-  const nome = d.nome || S.nome || 'Atleta';
-  document.getElementById('dash-nome').textContent = nome;
-  document.getElementById('dash-av').textContent = nome.charAt(0).toUpperCase();
-
-  const hoje = new Date();
-  document.getElementById('dash-data').textContent = hoje.toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' });
-
-  document.getElementById('dash-pct').textContent = (d.progresso || 0) + '%';
-  document.getElementById('dash-bar').style.width = (d.progresso || 0) + '%';
-  document.getElementById('dash-pts-lbl').textContent = (d.ptsDia || 0) + ' pts hoje';
-
-  document.getElementById('s-pts-dia').textContent = d.ptsDia || 0;
-  document.getElementById('s-pts-sem').textContent = d.ptsSemana || 0;
-  document.getElementById('s-jogo').textContent = d.horasJogo || '0h';
-  document.getElementById('s-km').textContent = (d.kmSemana || 0) + 'km';
-
-  const streak = d.streak || 0;
-  document.getElementById('streak-val').textContent = streak + (streak === 1 ? ' dia' : ' dias');
-  document.getElementById('streak-msg').textContent =
-    streak === 0 ? 'Comece sua sequência hoje!' :
-    streak < 7  ? 'Continue! Faltam ' + (7 - streak) + ' dias para a conquista' :
-    streak < 15 ? 'Incrível! ' + streak + ' dias seguidos 🔥' : 'Modo DEUS ativado! 👑';
-
-  document.getElementById('fds-warn').style.display = d.ehFds ? 'block' : 'none';
-  S.tarefas = new Set(d.tarefasHoje || []);
-}
-
-// ═══════════════════════════════════
-//  CHECKLIST
-// ═══════════════════════════════════
-const SECS = [
-  { id: 'alim', icon: '🍽', nome: 'Alimentação', tarefas: [
-    { id: 'cafe',         nome: 'Café da manhã',    pts: 15 },
-    { id: 'almoco',       nome: 'Almoço',            pts: 15 },
-    { id: 'jantar',       nome: 'Jantar',            pts: 15 },
-    { id: 'sem_besteira', nome: 'Não comi besteira', pts: 25 },
-    { id: 'lanche',       nome: 'Lanche (opcional)', pts: 0  },
-  ]},
-  { id: 'treino', icon: '🏋️', nome: 'Treinos', tarefas: [
-    { id: 'corrida',    nome: 'Corrida',    pts: 25, km: true },
-    { id: 'calistenia', nome: 'Calistenia', pts: 20 },
-  ]},
-  { id: 'estudo', icon: '📚', nome: 'Estudo', ciclos: true },
-  { id: 'acad', icon: '🎓', nome: 'Atividades Acadêmicas', tarefas: [
-    { id: 'academico', nome: 'Atividade Acadêmica', pts: 15 },
-  ]},
-  { id: 'org', icon: '🧹', nome: 'Organização', tarefas: [
-    { id: 'quarto',      nome: 'Arrumar o quarto', pts: 15 },
-    { id: 'ajudar_casa', nome: 'Ajudar em casa',   pts: 15 },
-  ]},
-  { id: 'trab', icon: '💼', nome: 'Trabalho', tarefas: [
-    { id: 'trabalho', nome: 'Trabalho', pts: 10 },
-  ]},
-  { id: 'curso', icon: '🖥️', nome: 'Curso', tarefas: [
-    { id: 'curso',        nome: 'Curso online',   pts: 10 },
-    { id: 'curso_sabado', nome: 'Curso (sábado)', pts: 10 },
-  ]},
-];
-
-async function loadChecklist() {
-  const r = await api('getTarefasHoje');
-  if (r.ok) {
-    S.tarefas = new Set(r.tarefas);
-    S.ciclos = 0;
-    for (let i = 1; i <= 6; i++) if (S.tarefas.has('ciclo_' + i)) S.ciclos++;
-  }
-  renderChecklist();
-}
-
-function renderChecklist() {
-  // Total de pontos
-  let total = S.ciclos * 15;
-  S.tarefas.forEach(id => {
-    for (const sec of SECS) {
-      if (!sec.tarefas) continue;
-      const t = sec.tarefas.find(t => t.id === id);
-      if (t) total += t.pts;
+  fetch(API, {
+    method: "POST",
+    body: JSON.stringify({ func: "login", email, senha })
+  })
+  .then(r => r.json())
+  .then(d => {
+    if (d.status == "ok") {
+      usuario = d.user;
+      document.getElementById("login").style.display = "none";
+      document.getElementById("app").style.display = "block";
+      atualizar();
+    } else {
+      alert("Erro no login");
     }
   });
-  document.getElementById('cl-total').textContent = total + ' pts';
-
-  document.getElementById('cl-container').innerHTML = SECS.map(sec => {
-    const feitas = sec.ciclos ? S.ciclos : (sec.tarefas || []).filter(t => S.tarefas.has(t.id)).length;
-    const tot = sec.ciclos ? 6 : (sec.tarefas || []).length;
-    const ptsMax = sec.ciclos ? 90 : (sec.tarefas || []).reduce((a, t) => a + t.pts, 0);
-
-    const items = sec.ciclos ? renderCiclos() : (sec.tarefas || []).map(t => {
-      const done = S.tarefas.has(t.id);
-      return `
-        <div class="task ${done ? 'done' : ''}" id="tk-${t.id}" onclick="toggleTask('${t.id}',${t.pts},${!!t.km})">
-          <div class="chk">${done ? '✓' : ''}</div>
-          <div class="t-info">
-            <div class="t-name">${t.nome}</div>
-            ${done ? '<div class="t-meta">✓ concluído hoje</div>' : ''}
-          </div>
-          <span class="t-pts ${t.pts === 0 ? 'zero' : ''}">${t.pts === 0 ? 'opcional' : t.pts + 'pts'}</span>
-        </div>
-        ${t.km ? `<div class="km-wrap" id="km-${t.id}" style="${done ? 'display:block' : ''}">
-          <div class="km-label">KM percorridos hoje</div>
-          <div class="km-row">
-            <input class="km-in" id="kmin-${t.id}" type="number" step="0.1" min="0" placeholder="Ex: 5.2">
-            <button class="km-ok" onclick="enviarKm('${t.id}')">OK</button>
-          </div>
-        </div>` : ''}`;
-    }).join('');
-
-    return `
-      <div class="cl-sec" id="sec-${sec.id}">
-        <div class="cl-hdr" onclick="toggleSec('${sec.id}')">
-          <span class="cl-hi">${sec.icon}</span>
-          <span class="cl-ht">${sec.nome}</span>
-          <span class="cl-hp">${ptsMax}pts</span>
-          <span class="cl-hc">${feitas}/${tot}</span>
-          <span class="cl-arr">▼</span>
-        </div>
-        <div class="cl-items">${items}</div>
-      </div>`;
-  }).join('');
 }
 
-function renderCiclos() {
-  const dots = Array.from({ length: 6 }, (_, i) =>
-    `<div class="cdot ${S.ciclos > i ? 'on' : ''}" onclick="toggleCiclo(${i + 1})">${i + 1}</div>`
-  ).join('');
-  return `<div class="ciclos-wrap">
-    <div class="ciclos-label">Ciclos de estudo · 15pts cada</div>
-    <div class="ciclos-row">${dots}</div>
-    <div class="ciclo-info">${S.ciclos * 15} / 90 pts · ${S.ciclos}/6 ciclos concluídos</div>
-  </div>`;
+// TAREFA
+function tarefa(nome, categoria) {
+  fetch(API, {
+    method: "POST",
+    body: JSON.stringify({
+      func: "salvarTarefa",
+      usuario,
+      tarefa: nome,
+      categoria
+    })
+  })
+  .then(() => atualizar());
 }
 
-function toggleSec(id) { document.getElementById('sec-' + id).classList.toggle('collapsed'); }
+// CORRIDA
+function corrida() {
+  let km = document.getElementById("kmInput").value;
 
-async function toggleTask(id, pts, temKm) {
-  const r = await api('salvarTarefa', { tarefa: id, pontos: pts });
-  if (!r.ok) { toast('❌', 'Erro', r.erro, 'red'); return; }
-  if (r.acao === 'marcado') {
-    S.tarefas.add(id);
-    toast('✅', 'Concluído!', '+' + pts + ' pontos', 'green');
-    if (r.novas && r.novas.length > 0) {
-      setTimeout(() => r.novas.forEach(c => toast(c.icon, '🏆 Conquista!', c.nome, 'gold')), 1500);
-    }
-  } else {
-    S.tarefas.delete(id);
-    toast('↩️', 'Desmarcado', 'Tarefa removida');
-  }
-  if (temKm) {
-    const wrap = document.getElementById('km-' + id);
-    if (wrap) wrap.style.display = r.acao === 'marcado' ? 'block' : 'none';
-  }
-  renderChecklist();
+  fetch(API, {
+    method: "POST",
+    body: JSON.stringify({
+      func: "registrarCorrida",
+      usuario,
+      km
+    })
+  })
+  .then(() => atualizar());
 }
 
-async function toggleCiclo(num) {
-  const id = 'ciclo_' + num;
-  if (!S.tarefas.has(id) && num > S.ciclos + 1) { toast('⚠️', 'Ops!', 'Complete os ciclos em ordem', 'red'); return; }
-  const r = await api('salvarTarefa', { tarefa: id, pontos: 15 });
-  if (!r.ok) { toast('❌', 'Erro', r.erro, 'red'); return; }
-  if (r.acao === 'marcado') {
-    S.tarefas.add(id); S.ciclos = Math.min(6, S.ciclos + 1);
-    toast('📚', 'Ciclo ' + num, '+15 pts', 'green');
-  } else {
-    S.tarefas.delete(id);
-    for (let i = num; i <= 6; i++) S.tarefas.delete('ciclo_' + i);
-    S.ciclos = num - 1;
-  }
-  renderChecklist();
-}
-
-async function enviarKm(tarefaId) {
-  const val = parseFloat(document.getElementById('kmin-' + tarefaId).value);
-  if (!val || val <= 0) { toast('⚠️', 'KM inválido', 'Digite um número válido', 'red'); return; }
-  const r = await api('salvarKm', { km: val });
-  if (!r.ok) { toast('❌', 'Erro', r.erro, 'red'); return; }
-  toast('🏃', 'KM registrado!', val + 'km salvos', 'green');
-  document.getElementById('kmin-' + tarefaId).value = '';
-  if (r.novas && r.novas.length > 0) {
-    setTimeout(() => r.novas.forEach(c => toast(c.icon, '🏆 Conquista!', c.nome, 'gold')), 1500);
-  }
-}
-
-// ═══════════════════════════════════
-//  CONQUISTAS
-// ═══════════════════════════════════
-async function loadConquistas() {
-  const r = await api('getConquistas');
-  if (!r.ok) return;
-  document.getElementById('ach-pct').textContent = r.pct + '%';
-  document.getElementById('ach-pfill').style.width = r.pct + '%';
-  document.getElementById('ach-count').textContent = r.qtd + ' / ' + r.total;
-  document.getElementById('ach-sub').textContent = r.qtd === 0 ? 'Complete tarefas para desbloquear!' : r.qtd === r.total ? '🏆 Coleção completa!' : (r.total - r.qtd) + ' restantes';
-
-  const CATS = [
-    { label: '🏃 Corrida — Total', ids: ['km_1','km_5','km_10','km_25','km_50','km_100'] },
-    { label: '📅 Corrida — Semanal', ids: ['ksem_5','ksem_10','ksem_15'] },
-    { label: '🍽 Alimentação', ids: ['food_7','food_15','food_30'] },
-    { label: '🧹 Organização', ids: ['org_5','org_15','org_30'] },
-    { label: '🔥 Consistência', ids: ['str_7','str_15','str_30'] },
-  ];
-  const map = {};
-  r.lista.forEach(c => map[c.id] = c);
-  let html = '';
-  CATS.forEach(cat => {
-    html += `<div class="ach-cat">${cat.label}</div>`;
-    cat.ids.forEach(id => {
-      const c = map[id]; if (!c) return;
-      html += `<div class="ach-card ${c.desbloqueada ? 'on' : ''}">
-        <div class="ach-icon">${c.icon}</div>
-        <div class="ach-name">${c.nome}</div>
-        <div class="ach-desc">${c.desc}</div>
-        ${c.desbloqueada ? '<div class="ach-badge">✓</div>' : '<div class="ach-lock">🔒</div>'}
-      </div>`;
-    });
+// ATUALIZAR DASHBOARD
+function atualizar() {
+  fetch(API, {
+    method: "POST",
+    body: JSON.stringify({
+      func: "getDashboard",
+      usuario
+    })
+  })
+  .then(r => r.json())
+  .then(d => {
+    document.getElementById("pontos").innerText = "Pontos: " + d.pontos;
+    document.getElementById("km").innerText = "KM Semana: " + d.km.semana;
   });
-  document.getElementById('ach-grid').innerHTML = html;
 }
-
-// ═══════════════════════════════════
-//  HISTÓRICO
-// ═══════════════════════════════════
-const LABELS = {
-  cafe:'☕ Café', almoco:'🍽 Almoço', jantar:'🌙 Jantar', sem_besteira:'🥗 Sem besteira',
-  lanche:'🍎 Lanche', corrida:'🏃 Corrida', calistenia:'💪 Calistenia',
-  ciclo_1:'📚 Ciclo 1', ciclo_2:'📚 Ciclo 2', ciclo_3:'📚 Ciclo 3',
-  ciclo_4:'📚 Ciclo 4', ciclo_5:'📚 Ciclo 5', ciclo_6:'📚 Ciclo 6',
-  academico:'🎓 Acadêmico', quarto:'🧹 Quarto', ajudar_casa:'🏠 Em casa',
-  trabalho:'💼 Trabalho', curso:'🖥️ Curso', curso_sabado:'🖥️ Curso Sábado'
-};
-
-async function loadHistorico() {
-  const r = await api('getHistorico');
-  if (!r.ok || !r.dias || r.dias.length === 0) {
-    document.getElementById('hist-container').innerHTML = '<div style="text-align:center;padding:50px;color:var(--txt2)"><div style="font-size:32px;margin-bottom:10px">📊</div><div>Nenhum registro ainda</div></div>';
-    return;
-  }
-  const dias = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
-  const meses = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
-  document.getElementById('hist-container').innerHTML = r.dias.map(d => {
-    const dt = new Date(d.data + 'T12:00:00');
-    const label = dias[dt.getDay()] + ', ' + dt.getDate() + ' ' + meses[dt.getMonth()];
-    const tags = d.tarefas.map(t => `<span class="hist-tag">${LABELS[t] || t}</span>`).join('');
-    return `<div class="hist-day" id="hd-${d.data}">
-      <div class="hist-hdr" onclick="this.parentElement.classList.toggle('open')">
-        <div><div class="hist-date">${label}</div>${d.km > 0 ? '<div class="hist-km">🏃 ' + Number(d.km).toFixed(1) + 'km</div>' : ''}</div>
-        <div><div class="hist-pts">${d.pontos} pts</div><div class="hist-qtd">${d.tarefas.length} tarefas</div></div>
-      </div>
-      <div class="hist-tags">${tags || '<span style="font-size:11px;color:var(--txt2)">—</span>'}</div>
-    </div>`;
-  }).join('');
-}
-
-// ═══════════════════════════════════
-//  CONFIG
-// ═══════════════════════════════════
-async function loadConfig() {
-  const r = await api('getConfig');
-  const nome = r.ok ? r.nome : S.nome;
-  document.getElementById('cfg-nome-d').textContent = nome;
-  document.getElementById('cfg-email-d').textContent = S.email || '—';
-  document.getElementById('cfg-av').textContent = nome ? nome.charAt(0).toUpperCase() : '?';
-  document.getElementById('cfg-nome-in').value = nome;
-  const tog = document.getElementById('tog-notif');
-  tog.classList.toggle('on', r.ok ? r.notificacoes : true);
-  tog.onclick = () => {
-    tog.classList.toggle('on');
-    if (tog.classList.contains('on') && 'Notification' in window) Notification.requestPermission();
-    api('salvarConfig', { nome: document.getElementById('cfg-nome-in').value, notificacoes: tog.classList.contains('on') });
-  };
-}
-
-document.getElementById('btn-salvar-nome').onclick = async () => {
-  const nome = document.getElementById('cfg-nome-in').value.trim();
-  if (!nome) return;
-  const r = await api('salvarConfig', { nome, notificacoes: document.getElementById('tog-notif').classList.contains('on') });
-  if (r.ok) {
-    S.nome = nome; localStorage.setItem('r_nome', nome);
-    document.getElementById('cfg-nome-d').textContent = nome;
-    document.getElementById('cfg-av').textContent = nome.charAt(0).toUpperCase();
-    const ok = document.getElementById('cfg-ok');
-    ok.style.display = 'block';
-    setTimeout(() => ok.style.display = 'none', 2500);
-  }
-};
-
-// ═══════════════════════════════════
-//  INIT
-// ═══════════════════════════════════
-(async function() {
-  if (S.token) {
-    loader('Verificando sessão...');
-    const r = await api('getDashboard');
-    hideLoader();
-    if (r.ok) { iniciarApp(); return; }
-    localStorage.clear(); S.token = null;
-  }
-  hideLoader();
-})();
 </script>
+
 </body>
 </html>
