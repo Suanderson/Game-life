@@ -2,147 +2,753 @@
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8">
-<title>Sistema Rotina</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0f172a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="ROTINA">
+<link rel="manifest" href="manifest.json">
+<title>ROTINA</title>
 <style>
-body {
-  font-family: Arial;
-  background: #0f172a;
-  color: white;
-  text-align: center;
-}
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+body { font-family: Arial, sans-serif; background: #0f172a; color: #f1f5f9; min-height: 100vh; }
 
-.container {
-  max-width: 400px;
-  margin: auto;
-}
+/* ── TELAS ── */
+.tela { display: none; min-height: 100vh; flex-direction: column; }
+.tela.ativa { display: flex; }
 
-button {
-  padding: 10px;
-  margin: 5px;
-  width: 100%;
-  border: none;
-  background: #22c55e;
-  color: white;
-  font-size: 16px;
-  cursor: pointer;
-}
+/* ── LOGIN ── */
+#tela-login { align-items: center; justify-content: center; padding: 20px; }
+.login-box { background: #1e293b; border-radius: 12px; padding: 32px 24px; width: 100%; max-width: 360px; }
+.login-box h1 { text-align: center; font-size: 28px; margin-bottom: 4px; }
+.login-box p { text-align: center; color: #94a3b8; font-size: 13px; margin-bottom: 24px; }
+.campo label { display: block; font-size: 12px; color: #94a3b8; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 1px; }
+.campo input { width: 100%; padding: 12px; background: #0f172a; border: 1px solid #334155; border-radius: 8px; color: #f1f5f9; font-size: 15px; outline: none; margin-bottom: 14px; }
+.campo input:focus { border-color: #6366f1; }
+.btn-entrar { width: 100%; padding: 13px; background: #6366f1; border: none; border-radius: 8px; color: white; font-size: 16px; font-weight: bold; cursor: pointer; }
+.btn-entrar:active { background: #4f46e5; }
+.erro-login { color: #f87171; font-size: 13px; text-align: center; margin-top: 10px; display: none; }
 
-input {
-  padding: 10px;
-  width: 100%;
-  margin: 5px;
-}
+/* ── NAV INFERIOR ── */
+.nav { position: fixed; bottom: 0; left: 0; right: 0; height: 60px; background: #1e293b; border-top: 1px solid #334155; display: none; align-items: center; justify-content: space-around; z-index: 100; }
+.nav.visivel { display: flex; }
+.nav-btn { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px; background: none; border: none; color: #64748b; cursor: pointer; padding: 8px 4px; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; font-family: Arial; }
+.nav-btn .icone { font-size: 20px; }
+.nav-btn.ativo { color: #6366f1; }
+
+/* ── CONTEÚDO GERAL ── */
+.conteudo { flex: 1; padding: 16px 16px 76px; overflow-y: auto; }
+.titulo-tela { font-size: 11px; letter-spacing: 3px; color: #64748b; text-transform: uppercase; margin-bottom: 16px; padding-top: 8px; }
+
+/* ── DASHBOARD ── */
+.saudacao { margin-bottom: 16px; }
+.saudacao p { color: #64748b; font-size: 12px; }
+.saudacao h2 { font-size: 22px; font-weight: bold; }
+.saudacao h2 span { color: #818cf8; }
+
+.card { background: #1e293b; border-radius: 12px; padding: 16px; margin-bottom: 12px; }
+.card-titulo { font-size: 10px; letter-spacing: 2px; color: #64748b; text-transform: uppercase; margin-bottom: 8px; }
+
+/* Progresso */
+.prog-topo { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 10px; }
+.prog-pct { font-size: 32px; font-weight: bold; color: #818cf8; }
+.prog-pts { font-size: 12px; color: #64748b; }
+.barra-fundo { height: 8px; background: #0f172a; border-radius: 99px; overflow: hidden; }
+.barra-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, #6366f1, #818cf8, #06b6d4); transition: width 0.6s ease; }
+
+/* Stats */
+.stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+.stat { background: #1e293b; border-radius: 12px; padding: 14px; }
+.stat .si { font-size: 18px; margin-bottom: 4px; }
+.stat .sv { font-size: 22px; font-weight: bold; margin-bottom: 2px; }
+.stat .sl { font-size: 10px; color: #64748b; text-transform: uppercase; letter-spacing: 1px; }
+.amarelo { color: #fbbf24; }
+.roxo { color: #c084fc; }
+.verde { color: #34d399; }
+.ciano { color: #22d3ee; }
+
+/* Streak */
+.streak-card { background: linear-gradient(135deg, #1e293b, #1e2940); border: 1px solid #f9731622; border-radius: 12px; padding: 14px 16px; display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+.streak-fogo { font-size: 32px; }
+.streak-val { font-size: 18px; font-weight: bold; color: #fb923c; }
+.streak-msg { font-size: 11px; color: #64748b; margin-top: 2px; }
+
+.aviso-fds { background: #1e2a1e; border: 1px solid #22c55e33; border-radius: 10px; padding: 10px 14px; font-size: 12px; color: #86efac; margin-bottom: 12px; display: none; }
+
+/* ── CHECKLIST ── */
+.secao { margin-bottom: 16px; }
+.secao-titulo { display: flex; align-items: center; gap: 8px; padding: 10px 12px; background: #1e293b; border-radius: 8px; cursor: pointer; margin-bottom: 6px; border: 1px solid #334155; }
+.secao-titulo .si { font-size: 15px; }
+.secao-titulo .st { font-size: 11px; letter-spacing: 1px; text-transform: uppercase; font-weight: bold; flex: 1; }
+.secao-titulo .sp { font-size: 11px; color: #fbbf24; }
+.secao-titulo .sc { font-size: 10px; color: #64748b; }
+.secao-titulo .arr { font-size: 10px; color: #64748b; transition: transform 0.2s; }
+.secao.fechada .arr { transform: rotate(-90deg); }
+.secao.fechada .secao-itens { display: none; }
+
+.secao-itens { display: flex; flex-direction: column; gap: 5px; }
+.item { display: flex; align-items: center; gap: 10px; padding: 12px 13px; background: #1e293b; border: 1px solid #334155; border-radius: 8px; cursor: pointer; transition: all 0.2s; position: relative; overflow: hidden; }
+.item::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: transparent; }
+.item.feito { background: #0f2318; border-color: #166534; }
+.item.feito::before { background: #22c55e; }
+.item:active { transform: scale(0.99); }
+.check { width: 20px; height: 20px; border: 2px solid #475569; border-radius: 5px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 11px; transition: all 0.2s; }
+.item.feito .check { background: #22c55e; border-color: #22c55e; color: white; }
+.item-info { flex: 1; }
+.item-nome { font-size: 13px; font-weight: 600; }
+.item.feito .item-nome { color: #64748b; text-decoration: line-through; }
+.item-hora { font-size: 10px; color: #475569; margin-top: 1px; }
+.item-pts { font-size: 11px; font-weight: bold; color: #fbbf24; background: #1e2a0a; padding: 3px 8px; border-radius: 99px; flex-shrink: 0; }
+.item.feito .item-pts { color: #475569; background: none; }
+.item-pts.zero { color: #475569; background: none; }
+
+/* KM input */
+.km-box { background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 10px 12px; margin-top: 4px; display: none; }
+.km-box label { font-size: 10px; color: #64748b; text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 6px; }
+.km-row { display: flex; gap: 8px; }
+.km-input { flex: 1; padding: 9px 12px; background: #0f172a; border: 1px solid #334155; border-radius: 6px; color: #f1f5f9; font-size: 14px; outline: none; }
+.km-input:focus { border-color: #22d3ee; }
+.km-salvar { padding: 9px 16px; background: #0891b2; border: none; border-radius: 6px; color: white; font-weight: bold; font-size: 12px; cursor: pointer; }
+
+/* Ciclos */
+.ciclos-box { background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 12px 13px; }
+.ciclos-label { font-size: 10px; color: #64748b; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+.ciclos-row { display: flex; gap: 6px; flex-wrap: wrap; }
+.ciclo-dot { width: 38px; height: 38px; border-radius: 8px; border: 2px solid #334155; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: bold; color: #64748b; cursor: pointer; transition: all 0.2s; }
+.ciclo-dot.ativo { background: #6366f1; border-color: #6366f1; color: white; transform: scale(1.05); }
+.ciclos-info { font-size: 11px; color: #64748b; margin-top: 8px; }
+
+/* ── CONQUISTAS ── */
+.ach-resumo { background: #1e293b; border-radius: 12px; padding: 16px; margin-bottom: 14px; display: flex; justify-content: space-between; align-items: center; }
+.ach-resumo h3 { font-size: 14px; font-weight: bold; }
+.ach-resumo p { font-size: 11px; color: #64748b; margin-top: 2px; }
+.ach-pct { font-size: 28px; font-weight: bold; color: #fbbf24; text-align: right; }
+.ach-pct small { display: block; font-size: 10px; color: #64748b; font-weight: normal; }
+.ach-barra { height: 4px; background: #0f172a; border-radius: 99px; overflow: hidden; margin-top: 6px; width: 80px; }
+.ach-barra-fill { height: 100%; background: linear-gradient(90deg, #f59e0b, #fbbf24); border-radius: 99px; transition: width 0.5s; }
+
+.ach-categoria { font-size: 10px; letter-spacing: 2px; color: #818cf8; text-transform: uppercase; margin: 14px 0 8px; font-weight: bold; }
+.ach-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.ach-card { background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 14px 12px; text-align: center; position: relative; overflow: hidden; }
+.ach-card.desbloqueada { border-color: #f59e0b44; background: #1e2a00; }
+.ach-icone { font-size: 28px; margin-bottom: 6px; filter: grayscale(0.8); }
+.ach-card.desbloqueada .ach-icone { filter: none; }
+.ach-nome { font-size: 11px; font-weight: bold; margin-bottom: 3px; line-height: 1.3; }
+.ach-desc { font-size: 9px; color: #64748b; }
+.ach-prog-bar { height: 3px; background: #0f172a; border-radius: 99px; overflow: hidden; margin-top: 6px; }
+.ach-prog-fill { height: 100%; background: #fbbf24; border-radius: 99px; }
+.ach-lock { position: absolute; inset: 0; background: rgba(15,23,42,0.5); display: flex; align-items: center; justify-content: center; font-size: 18px; border-radius: 12px; }
+.ach-card.desbloqueada .ach-lock { display: none; }
+.ach-check { position: absolute; top: 6px; right: 6px; width: 16px; height: 16px; border-radius: 99px; background: #fbbf24; color: #0f172a; font-size: 9px; font-weight: bold; display: flex; align-items: center; justify-content: center; }
+
+/* ── HISTÓRICO ── */
+.hist-dia { background: #1e293b; border-radius: 12px; margin-bottom: 8px; overflow: hidden; }
+.hist-dia-topo { display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; cursor: pointer; }
+.hist-data { font-size: 12px; font-weight: bold; }
+.hist-km { font-size: 10px; color: #22d3ee; margin-top: 2px; }
+.hist-pontos { font-size: 13px; font-weight: bold; color: #fbbf24; text-align: right; }
+.hist-qtd { font-size: 10px; color: #64748b; }
+.hist-tarefas { padding: 0 14px 12px; display: none; flex-wrap: wrap; gap: 5px; }
+.hist-dia.aberto .hist-tarefas { display: flex; }
+.hist-tag { padding: 3px 9px; background: #0f172a; border-radius: 99px; font-size: 10px; color: #94a3b8; border: 1px solid #334155; }
+
+/* ── CONFIG ── */
+.perfil-card { background: #1e293b; border-radius: 12px; padding: 16px; display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+.perfil-av { width: 48px; height: 48px; border-radius: 12px; background: linear-gradient(135deg, #6366f1, #06b6d4); display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: bold; flex-shrink: 0; }
+.perfil-nome { font-size: 16px; font-weight: bold; }
+.perfil-email { font-size: 11px; color: #64748b; margin-top: 2px; }
+.cfg-box { background: #1e293b; border-radius: 12px; margin-bottom: 10px; overflow: hidden; }
+.cfg-linha { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; border-bottom: 1px solid #334155; }
+.cfg-linha:last-child { border-bottom: none; }
+.cfg-linha-titulo { font-size: 13px; font-weight: 600; }
+.cfg-linha-sub { font-size: 10px; color: #64748b; margin-top: 2px; }
+.cfg-nome-area { padding: 14px 16px; display: flex; flex-direction: column; gap: 8px; }
+.cfg-input { width: 100%; padding: 10px 12px; background: #0f172a; border: 1px solid #334155; border-radius: 8px; color: #f1f5f9; font-size: 14px; outline: none; }
+.cfg-input:focus { border-color: #6366f1; }
+.toggle { width: 42px; height: 23px; background: #334155; border-radius: 99px; position: relative; cursor: pointer; border: none; transition: background 0.2s; flex-shrink: 0; }
+.toggle.ativo { background: #6366f1; }
+.toggle::after { content: ''; position: absolute; width: 17px; height: 17px; border-radius: 99px; background: white; top: 3px; left: 3px; transition: transform 0.2s; }
+.toggle.ativo::after { transform: translateX(19px); }
+.btn-salvar { padding: 10px 18px; background: #6366f1; border: none; border-radius: 8px; color: white; font-weight: bold; font-size: 13px; cursor: pointer; align-self: flex-start; }
+.btn-sair { width: 100%; padding: 14px; background: #1e293b; border: 1px solid #ef444433; border-radius: 8px; color: #f87171; font-size: 14px; font-weight: bold; cursor: pointer; margin-top: 4px; }
+.msg-ok { font-size: 12px; color: #86efac; display: none; }
+
+/* ── TOAST ── */
+.toast { position: fixed; top: 16px; left: 50%; transform: translateX(-50%) translateY(-80px); background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 10px 18px; display: flex; align-items: center; gap: 10px; z-index: 999; min-width: 220px; max-width: 320px; transition: transform 0.3s; box-shadow: 0 8px 32px rgba(0,0,0,0.5); }
+.toast.visivel { transform: translateX(-50%) translateY(0); }
+.toast.verde { border-color: #22c55e44; }
+.toast.amarelo { border-color: #fbbf2444; }
+.toast.vermelho { border-color: #ef444444; }
+.toast-icone { font-size: 20px; }
+.toast-titulo { font-size: 13px; font-weight: bold; }
+.toast-msg { font-size: 11px; color: #64748b; margin-top: 1px; }
+
+/* ── LOADER ── */
+.loader { position: fixed; inset: 0; background: #0f172a; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 14px; z-index: 200; }
+.loader-spin { width: 36px; height: 36px; border: 3px solid #334155; border-top-color: #818cf8; border-radius: 99px; animation: girar 0.7s linear infinite; }
+@keyframes girar { to { transform: rotate(360deg); } }
+.loader-txt { font-size: 11px; letter-spacing: 3px; color: #64748b; text-transform: uppercase; }
 </style>
-
 </head>
 <body>
 
-<div class="container" id="login">
-  <h2>Login</h2>
-  <input id="email" placeholder="Email">
-  <input id="senha" placeholder="Senha" type="password">
-  <button onclick="logar()">Entrar</button>
+<!-- LOADER -->
+<div class="loader" id="loader">
+  <div class="loader-spin"></div>
+  <div class="loader-txt" id="loader-txt">Carregando...</div>
 </div>
 
-<div class="container" id="app" style="display:none">
-  <h2>Dashboard</h2>
-  <p id="pontos"></p>
-  <p id="km"></p>
-
-  <h3>Checklist</h3>
-
-  <button onclick="tarefa('cafe','alimentacao')">Café</button>
-  <button onclick="tarefa('almoco','alimentacao')">Almoço</button>
-  <button onclick="tarefa('jantar','alimentacao')">Jantar</button>
-  <button onclick="tarefa('sem_besteira','alimentacao')">Sem besteira</button>
-
-  <button onclick="tarefa('calistenia','treino')">Calistenia</button>
-
-  <button onclick="tarefa('estudo','estudo')">Estudo</button>
-
-  <button onclick="tarefa('quarto','casa')">Arrumar quarto</button>
-  <button onclick="tarefa('casa','casa')">Ajudar em casa</button>
-
-  <button onclick="tarefa('trabalho','trabalho')">Trabalho</button>
-  <button onclick="tarefa('curso','curso')">Curso</button>
-
-  <h3>Corrida</h3>
-  <input id="kmInput" placeholder="KM">
-  <button onclick="corrida()">Registrar Corrida</button>
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <div class="toast-icone" id="t-icone">✅</div>
+  <div>
+    <div class="toast-titulo" id="t-titulo">Título</div>
+    <div class="toast-msg" id="t-msg">Mensagem</div>
+  </div>
 </div>
+
+<!-- ════ LOGIN ════ -->
+<div class="tela ativa" id="tela-login">
+  <div class="login-box">
+    <h1>⚡ ROTINA</h1>
+    <p>sistema de evolução pessoal</p>
+    <div class="campo">
+      <label>Email</label>
+      <input type="email" id="email" placeholder="seu@email.com" autocomplete="email">
+      <label>Senha</label>
+      <input type="password" id="senha" placeholder="••••••••" autocomplete="current-password">
+    </div>
+    <button class="btn-entrar" id="btn-login">ENTRAR</button>
+    <div class="erro-login" id="erro-login">Email ou senha incorretos</div>
+  </div>
+</div>
+
+<!-- ════ DASHBOARD ════ -->
+<div class="tela" id="tela-dash">
+  <div class="conteudo">
+    <div class="titulo-tela">Dashboard</div>
+    <div class="saudacao">
+      <p id="dash-data"></p>
+      <h2>Olá, <span id="dash-nome">—</span> 👋</h2>
+    </div>
+
+    <!-- Progresso -->
+    <div class="card">
+      <div class="card-titulo">Progresso do Dia</div>
+      <div class="prog-topo">
+        <div>
+          <div class="prog-pct" id="dash-pct">0%</div>
+          <div class="prog-pts" id="dash-pts-txt">0 pts hoje</div>
+        </div>
+      </div>
+      <div class="barra-fundo"><div class="barra-fill" id="dash-barra" style="width:0%"></div></div>
+    </div>
+
+    <!-- Streak -->
+    <div class="streak-card">
+      <div class="streak-fogo">🔥</div>
+      <div>
+        <div class="streak-val" id="streak-val">0 dias</div>
+        <div class="streak-msg" id="streak-msg">Comece hoje!</div>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats">
+      <div class="stat"><div class="si">⭐</div><div class="sv amarelo" id="s-dia">0</div><div class="sl">Pts Hoje</div></div>
+      <div class="stat"><div class="si">🏅</div><div class="sv roxo" id="s-sem">0</div><div class="sl">Pts Semana</div></div>
+      <div class="stat"><div class="si">🎮</div><div class="sv verde" id="s-jogo">0h</div><div class="sl">Jogo Semana</div></div>
+      <div class="stat"><div class="si">🏃</div><div class="sv ciano" id="s-km">0km</div><div class="sl">KM Semana</div></div>
+    </div>
+
+    <div class="aviso-fds" id="aviso-fds">🌤️ Fim de semana — pontos valem metade, streak não quebra!</div>
+  </div>
+</div>
+
+<!-- ════ CHECKLIST ════ -->
+<div class="tela" id="tela-check">
+  <div class="conteudo">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding-top:8px">
+      <div class="titulo-tela" style="margin:0">Checklist</div>
+      <div style="font-size:12px;color:#fbbf24;font-weight:bold" id="cl-total">0 pts</div>
+    </div>
+    <div id="cl-container"></div>
+  </div>
+</div>
+
+<!-- ════ CONQUISTAS ════ -->
+<div class="tela" id="tela-ach">
+  <div class="conteudo">
+    <div class="titulo-tela">Conquistas</div>
+    <div class="ach-resumo">
+      <div>
+        <h3>Sua Coleção</h3>
+        <p id="ach-sub">Complete tarefas!</p>
+      </div>
+      <div>
+        <div class="ach-pct" id="ach-pct">0%</div>
+        <small id="ach-count" style="font-size:10px;color:#64748b">0 / 18</small>
+        <div class="ach-barra"><div class="ach-barra-fill" id="ach-barra-fill" style="width:0%"></div></div>
+      </div>
+    </div>
+    <div id="ach-container"></div>
+  </div>
+</div>
+
+<!-- ════ HISTÓRICO ════ -->
+<div class="tela" id="tela-hist">
+  <div class="conteudo">
+    <div class="titulo-tela">Histórico</div>
+    <div id="hist-container"></div>
+  </div>
+</div>
+
+<!-- ════ CONFIG ════ -->
+<div class="tela" id="tela-cfg">
+  <div class="conteudo">
+    <div class="titulo-tela">Configurações</div>
+    <div class="perfil-card">
+      <div class="perfil-av" id="cfg-av">?</div>
+      <div>
+        <div class="perfil-nome" id="cfg-nome-d">—</div>
+        <div class="perfil-email" id="cfg-email-d">—</div>
+      </div>
+    </div>
+
+    <div class="cfg-box">
+      <div class="cfg-nome-area">
+        <label style="font-size:10px;color:#64748b;text-transform:uppercase;letter-spacing:1px">Nome de exibição</label>
+        <input class="cfg-input" id="cfg-nome-in" placeholder="Seu nome">
+        <button class="btn-salvar" id="btn-salvar-nome">SALVAR</button>
+        <div class="msg-ok" id="cfg-ok">✓ Nome atualizado!</div>
+      </div>
+    </div>
+
+    <div class="cfg-box">
+      <div class="cfg-linha">
+        <div>
+          <div class="cfg-linha-titulo">Notificações</div>
+          <div class="cfg-linha-sub">Lembretes diários</div>
+        </div>
+        <button class="toggle" id="tog-notif"></button>
+      </div>
+    </div>
+
+    <button class="btn-sair" id="btn-sair">SAIR DA CONTA</button>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <button class="nav-btn ativo" data-tela="dash" onclick="ir('dash')"><span class="icone">🏠</span>Início</button>
+  <button class="nav-btn" data-tela="check" onclick="ir('check')"><span class="icone">✅</span>Tarefas</button>
+  <button class="nav-btn" data-tela="ach" onclick="ir('ach')"><span class="icone">🏆</span>Troféus</button>
+  <button class="nav-btn" data-tela="hist" onclick="ir('hist')"><span class="icone">📊</span>Histórico</button>
+  <button class="nav-btn" data-tela="cfg" onclick="ir('cfg')"><span class="icone">⚙️</span>Config</button>
+</nav>
 
 <script>
-const API = "https://script.google.com/macros/s/AKfycbzgVRyMsEPCOoopAOVn2DT-B3oQTzyDTxbP5J6lD8TeUQlbWfwV4BKwLhhQiAjfxmoW/exec";
-let usuario = "";
+const API = "https://script.google.com/macros/s/AKfycbwI_o95HlRzsdNgh0qzc33JcNSnkrZnh3ef4oHD_PhrP1n5zSU9XjSS_325EstnfEPt/exec";
 
+// ── Estado ──
+const app = {
+  usuario: localStorage.getItem("usuario") || null,
+  nome: localStorage.getItem("nome") || "",
+  email: localStorage.getItem("email") || "",
+  tarefas: new Set(),
+  ciclos: 0
+};
+
+// ── API ──
+async function chamar(dados) {
+  try {
+    const r = await fetch(API, { method: "POST", body: JSON.stringify(dados) });
+    return await r.json();
+  } catch(e) {
+    return { erro: "Sem conexão" };
+  }
+}
+
+// ── Loader ──
+function mostrarLoader(txt) {
+  document.getElementById("loader-txt").textContent = txt || "Carregando...";
+  document.getElementById("loader").style.display = "flex";
+}
+function esconderLoader() { document.getElementById("loader").style.display = "none"; }
+
+// ── Toast ──
+let _tt;
+function toast(icone, titulo, msg, tipo) {
+  const el = document.getElementById("toast");
+  document.getElementById("t-icone").textContent = icone;
+  document.getElementById("t-titulo").textContent = titulo;
+  document.getElementById("t-msg").textContent = msg || "";
+  el.className = "toast visivel " + (tipo || "");
+  clearTimeout(_tt);
+  _tt = setTimeout(() => el.classList.remove("visivel"), 3000);
+}
+
+// ── Navegação ──
+function ir(tela) {
+  ["dash","check","ach","hist","cfg"].forEach(t => {
+    document.getElementById("tela-" + t).classList.toggle("ativa", t === tela);
+  });
+  document.querySelectorAll(".nav-btn").forEach(b => b.classList.toggle("ativo", b.dataset.tela === tela));
+  if (tela === "dash")  carregarDash();
+  if (tela === "check") carregarChecklist();
+  if (tela === "ach")   carregarConquistas();
+  if (tela === "hist")  carregarHistorico();
+  if (tela === "cfg")   carregarConfig();
+}
+
+// ════════════════════════════════════
 // LOGIN
-function logar() {
-  let email = document.getElementById("email").value;
-  let senha = document.getElementById("senha").value;
+// ════════════════════════════════════
+document.getElementById("btn-login").onclick = async () => {
+  const email = document.getElementById("email").value.trim();
+  const senha = document.getElementById("senha").value;
+  const errEl = document.getElementById("erro-login");
+  errEl.style.display = "none";
+  if (!email || !senha) { errEl.style.display = "block"; errEl.textContent = "Preencha email e senha"; return; }
+  mostrarLoader("Entrando...");
+  const d = await chamar({ func: "login", email, senha });
+  esconderLoader();
+  if (d.status === "ok") {
+    app.usuario = d.usuario;
+    app.email = email;
+    localStorage.setItem("usuario", d.usuario);
+    localStorage.setItem("email", email);
+    iniciarApp();
+  } else {
+    errEl.style.display = "block";
+    errEl.textContent = d.msg || "Email ou senha incorretos";
+  }
+};
 
-  fetch(API, {
-    method: "POST",
-    body: JSON.stringify({ func: "login", email, senha })
-  })
-  .then(r => r.json())
-  .then(d => {
-    if (d.status == "ok") {
-      usuario = d.user;
-      document.getElementById("login").style.display = "none";
-      document.getElementById("app").style.display = "block";
-      atualizar();
-    } else {
-      alert("Erro no login");
+document.getElementById("senha").addEventListener("keydown", e => {
+  if (e.key === "Enter") document.getElementById("btn-login").click();
+});
+
+document.getElementById("btn-sair").onclick = async () => {
+  localStorage.clear();
+  location.reload();
+};
+
+function iniciarApp() {
+  document.getElementById("tela-login").classList.remove("ativa");
+  document.getElementById("nav").classList.add("visivel");
+  ir("dash");
+  if ("serviceWorker" in navigator) navigator.serviceWorker.register("/sw.js").catch(() => {});
+}
+
+// ════════════════════════════════════
+// DASHBOARD
+// ════════════════════════════════════
+async function carregarDash() {
+  const d = await chamar({ func: "getDashboard", usuario: app.usuario });
+  if (d.erro || d.status !== "ok") return;
+
+  const nome = d.nome || app.nome || "Atleta";
+  document.getElementById("dash-nome").textContent = nome;
+
+  const hoje = new Date();
+  document.getElementById("dash-data").textContent = hoje.toLocaleDateString("pt-BR", { weekday: "long", day: "numeric", month: "long" });
+
+  document.getElementById("dash-pct").textContent = (d.progresso || 0) + "%";
+  document.getElementById("dash-barra").style.width = (d.progresso || 0) + "%";
+  document.getElementById("dash-pts-txt").textContent = (d.ptsDia || 0) + " pts hoje";
+  document.getElementById("s-dia").textContent = d.ptsDia || 0;
+  document.getElementById("s-sem").textContent = d.ptsSemana || 0;
+  document.getElementById("s-jogo").textContent = (d.horasJogo || 0) + "h";
+  document.getElementById("s-km").textContent = (d.kmSemana || 0) + "km";
+
+  const streak = d.streak || 0;
+  document.getElementById("streak-val").textContent = streak + (streak === 1 ? " dia" : " dias");
+  document.getElementById("streak-msg").textContent =
+    streak === 0 ? "Comece sua sequência hoje!" :
+    streak < 7  ? "Continue! Faltam " + (7 - streak) + " dias para a conquista" :
+    streak < 15 ? "Incrível! " + streak + " dias seguidos 🔥" : "Modo DEUS ativado! 👑";
+
+  document.getElementById("aviso-fds").style.display = d.ehFds ? "block" : "none";
+  app.tarefas = new Set(d.tarefasHoje || []);
+}
+
+// ════════════════════════════════════
+// CHECKLIST
+// ════════════════════════════════════
+const SECOES = [
+  { id: "alim", icon: "🍽", nome: "Alimentação", itens: [
+    { id: "cafe",         nome: "Café da manhã",    pts: 15 },
+    { id: "almoco",       nome: "Almoço",            pts: 15 },
+    { id: "jantar",       nome: "Jantar",            pts: 15 },
+    { id: "sem_besteira", nome: "Não comi besteira", pts: 25 },
+    { id: "lanche",       nome: "Lanche (opcional)", pts: 0  },
+  ]},
+  { id: "treino", icon: "🏋️", nome: "Treinos", itens: [
+    { id: "corrida",    nome: "Corrida",    pts: 25, km: true },
+    { id: "calistenia", nome: "Calistenia", pts: 20 },
+  ]},
+  { id: "estudo", icon: "📚", nome: "Estudo", ciclos: true },
+  { id: "acad", icon: "🎓", nome: "Atividades Acadêmicas", itens: [
+    { id: "academico", nome: "Atividade Acadêmica", pts: 15 },
+  ]},
+  { id: "org", icon: "🧹", nome: "Organização", itens: [
+    { id: "quarto", nome: "Arrumar o quarto", pts: 15 },
+    { id: "casa",   nome: "Ajudar em casa",   pts: 15 },
+  ]},
+  { id: "trab", icon: "💼", nome: "Trabalho", itens: [
+    { id: "trabalho", nome: "Trabalho", pts: 10 },
+  ]},
+  { id: "curso", icon: "🖥️", nome: "Curso", itens: [
+    { id: "curso",        nome: "Curso",         pts: 10 },
+    { id: "curso_sabado", nome: "Curso (sábado)", pts: 10 },
+  ]},
+];
+
+async function carregarChecklist() {
+  const d = await chamar({ func: "getDashboard", usuario: app.usuario });
+  if (d.status === "ok") {
+    app.tarefas = new Set(d.tarefasHoje || []);
+    app.ciclos = 0;
+    for (let i = 1; i <= 6; i++) if (app.tarefas.has("ciclo_" + i)) app.ciclos++;
+  }
+  renderChecklist();
+}
+
+function renderChecklist() {
+  let total = app.ciclos * 15;
+  app.tarefas.forEach(id => {
+    for (const s of SECOES) {
+      if (!s.itens) continue;
+      const it = s.itens.find(i => i.id === id);
+      if (it) total += it.pts;
     }
   });
+  document.getElementById("cl-total").textContent = total + " pts";
+
+  document.getElementById("cl-container").innerHTML = SECOES.map(sec => {
+    const feitas = sec.ciclos ? app.ciclos : (sec.itens || []).filter(i => app.tarefas.has(i.id)).length;
+    const tot = sec.ciclos ? 6 : (sec.itens || []).length;
+    const ptsMax = sec.ciclos ? 90 : (sec.itens || []).reduce((a, i) => a + i.pts, 0);
+
+    const itensHtml = sec.ciclos ? renderCiclos() : (sec.itens || []).map(it => {
+      const feito = app.tarefas.has(it.id);
+      return `
+        <div class="item ${feito ? "feito" : ""}" onclick="marcarItem('${it.id}', ${it.pts}, ${!!it.km})">
+          <div class="check">${feito ? "✓" : ""}</div>
+          <div class="item-info">
+            <div class="item-nome">${it.nome}</div>
+            ${feito ? '<div class="item-hora">✓ concluído hoje</div>' : ""}
+          </div>
+          <span class="item-pts ${it.pts === 0 ? "zero" : ""}">${it.pts === 0 ? "opcional" : it.pts + "pts"}</span>
+        </div>
+        ${it.km ? `<div class="km-box" id="km-${it.id}" style="${feito ? "display:block" : ""}">
+          <label>KM percorridos</label>
+          <div class="km-row">
+            <input class="km-input" id="kmin-${it.id}" type="number" step="0.1" min="0" placeholder="Ex: 5.2">
+            <button class="km-salvar" onclick="salvarKm('${it.id}')">OK</button>
+          </div>
+        </div>` : ""}`;
+    }).join("");
+
+    return `
+      <div class="secao" id="sec-${sec.id}">
+        <div class="secao-titulo" onclick="toggleSecao('${sec.id}')">
+          <span class="si">${sec.icon}</span>
+          <span class="st">${sec.nome}</span>
+          <span class="sp">${ptsMax}pts</span>
+          <span class="sc">${feitas}/${tot}</span>
+          <span class="arr">▼</span>
+        </div>
+        <div class="secao-itens">${itensHtml}</div>
+      </div>`;
+  }).join("");
 }
 
-// TAREFA
-function tarefa(nome, categoria) {
-  fetch(API, {
-    method: "POST",
-    body: JSON.stringify({
-      func: "salvarTarefa",
-      usuario,
-      tarefa: nome,
-      categoria
-    })
-  })
-  .then(() => atualizar());
+function renderCiclos() {
+  const dots = Array.from({ length: 6 }, (_, i) =>
+    `<div class="ciclo-dot ${app.ciclos > i ? "ativo" : ""}" onclick="marcarCiclo(${i + 1})">${i + 1}</div>`
+  ).join("");
+  return `<div class="ciclos-box">
+    <div class="ciclos-label">Ciclos de estudo · 15pts cada</div>
+    <div class="ciclos-row">${dots}</div>
+    <div class="ciclos-info">${app.ciclos * 15} / 90 pts · ${app.ciclos}/6 ciclos</div>
+  </div>`;
 }
 
-// CORRIDA
-function corrida() {
-  let km = document.getElementById("kmInput").value;
+function toggleSecao(id) { document.getElementById("sec-" + id).classList.toggle("fechada"); }
 
-  fetch(API, {
-    method: "POST",
-    body: JSON.stringify({
-      func: "registrarCorrida",
-      usuario,
-      km
-    })
-  })
-  .then(() => atualizar());
+async function marcarItem(id, pts, temKm) {
+  const d = await chamar({ func: "salvarTarefa", usuario: app.usuario, tarefa: id, categoria: "geral" });
+  if (d.erro) { toast("❌", "Erro", d.erro, "vermelho"); return; }
+  if (d.status === "marcado") {
+    app.tarefas.add(id);
+    toast("✅", "Concluído!", "+" + pts + " pontos", "verde");
+  } else {
+    app.tarefas.delete(id);
+    toast("↩️", "Desmarcado", "Tarefa removida");
+  }
+  if (temKm) {
+    const box = document.getElementById("km-" + id);
+    if (box) box.style.display = d.status === "marcado" ? "block" : "none";
+  }
+  renderChecklist();
 }
 
-// ATUALIZAR DASHBOARD
-function atualizar() {
-  fetch(API, {
-    method: "POST",
-    body: JSON.stringify({
-      func: "getDashboard",
-      usuario
-    })
-  })
-  .then(r => r.json())
-  .then(d => {
-    document.getElementById("pontos").innerText = "Pontos: " + d.pontos;
-    document.getElementById("km").innerText = "KM Semana: " + d.km.semana;
+async function marcarCiclo(num) {
+  const id = "ciclo_" + num;
+  if (!app.tarefas.has(id) && num > app.ciclos + 1) { toast("⚠️", "Ops!", "Complete os ciclos em ordem", "vermelho"); return; }
+  const d = await chamar({ func: "salvarTarefa", usuario: app.usuario, tarefa: id, categoria: "estudo", ciclo: num });
+  if (d.erro) { toast("❌", "Erro", d.erro, "vermelho"); return; }
+  if (d.status === "marcado") {
+    app.tarefas.add(id); app.ciclos = Math.min(6, app.ciclos + 1);
+    toast("📚", "Ciclo " + num, "+15 pts", "verde");
+  } else {
+    app.tarefas.delete(id);
+    for (let i = num; i <= 6; i++) app.tarefas.delete("ciclo_" + i);
+    app.ciclos = num - 1;
+  }
+  renderChecklist();
+}
+
+async function salvarKm(tarefaId) {
+  const val = parseFloat(document.getElementById("kmin-" + tarefaId).value);
+  if (!val || val <= 0) { toast("⚠️", "KM inválido", "Digite um número", "vermelho"); return; }
+  const d = await chamar({ func: "registrarCorrida", usuario: app.usuario, km: val });
+  if (d.erro) { toast("❌", "Erro", d.erro, "vermelho"); return; }
+  toast("🏃", "KM registrado!", val + "km salvos", "verde");
+  document.getElementById("kmin-" + tarefaId).value = "";
+}
+
+// ════════════════════════════════════
+// CONQUISTAS
+// ════════════════════════════════════
+async function carregarConquistas() {
+  const d = await chamar({ func: "getConquistas", usuario: app.usuario });
+  if (!d.conquistas) return;
+
+  const total = d.conquistas.length;
+  const feitas = d.conquistas.filter(c => c.concluida).length;
+  const pct = Math.round((feitas / total) * 100);
+
+  document.getElementById("ach-pct").textContent = pct + "%";
+  document.getElementById("ach-barra-fill").style.width = pct + "%";
+  document.getElementById("ach-count").textContent = feitas + " / " + total;
+  document.getElementById("ach-sub").textContent = feitas === 0 ? "Complete tarefas!" : feitas === total ? "🏆 Coleção completa!" : (total - feitas) + " restantes";
+
+  const CATS = [
+    { label: "🏃 Corrida — Total", tipos: ["corrida_total"] },
+    { label: "📅 Corrida — Semanal", tipos: ["corrida_semana"] },
+    { label: "🍽 Alimentação", tipos: ["sem_besteira"] },
+    { label: "🧹 Organização", tipos: ["quarto"] },
+    { label: "🔥 Consistência", tipos: ["streak"] },
+  ];
+
+  let html = "";
+  CATS.forEach(cat => {
+    const itens = d.conquistas.filter(c => cat.tipos.includes(c.tipo));
+    if (!itens.length) return;
+    html += `<div class="ach-categoria">${cat.label}</div><div class="ach-grid">`;
+    itens.forEach(c => {
+      const icones = { corrida_total: "🏃", corrida_semana: "📅", sem_besteira: "🥗", quarto: "🧹", streak: "🔥" };
+      const icone = icones[c.tipo] || "🏆";
+      html += `<div class="ach-card ${c.concluida ? "desbloqueada" : ""}">
+        <div class="ach-icone">${icone}</div>
+        <div class="ach-nome">${c.nome}</div>
+        <div class="ach-desc">${c.descricao}</div>
+        <div class="ach-prog-bar"><div class="ach-prog-fill" style="width:${c.progresso}%"></div></div>
+        ${c.concluida ? '<div class="ach-check">✓</div>' : '<div class="ach-lock">🔒</div>'}
+      </div>`;
+    });
+    html += `</div>`;
   });
+  document.getElementById("ach-container").innerHTML = html;
 }
-</script>
 
+// ════════════════════════════════════
+// HISTÓRICO
+// ════════════════════════════════════
+const NOMES = {
+  cafe:"☕ Café", almoco:"🍽 Almoço", jantar:"🌙 Jantar", sem_besteira:"🥗 Sem besteira",
+  lanche:"🍎 Lanche", corrida:"🏃 Corrida", calistenia:"💪 Calistenia",
+  ciclo_1:"📚 Ciclo 1", ciclo_2:"📚 Ciclo 2", ciclo_3:"📚 Ciclo 3",
+  ciclo_4:"📚 Ciclo 4", ciclo_5:"📚 Ciclo 5", ciclo_6:"📚 Ciclo 6",
+  academico:"🎓 Acadêmico", quarto:"🧹 Quarto", casa:"🏠 Em casa",
+  trabalho:"💼 Trabalho", curso:"🖥️ Curso", curso_sabado:"🖥️ Curso Sábado"
+};
+
+async function carregarHistorico() {
+  const d = await chamar({ func: "getHistorico", usuario: app.usuario });
+  if (!d.dias || d.dias.length === 0) {
+    document.getElementById("hist-container").innerHTML = `<div style="text-align:center;padding:50px;color:#64748b"><div style="font-size:36px;margin-bottom:10px">📊</div><div>Nenhum registro ainda</div></div>`;
+    return;
+  }
+  const dias = ["Dom","Seg","Ter","Qua","Qui","Sex","Sáb"];
+  const meses = ["Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","Set","Out","Nov","Dez"];
+  document.getElementById("hist-container").innerHTML = d.dias.map(dia => {
+    const dt = new Date(dia.data + "T12:00:00");
+    const label = dias[dt.getDay()] + ", " + dt.getDate() + " " + meses[dt.getMonth()];
+    const tags = dia.tarefas.map(t => `<span class="hist-tag">${NOMES[t] || t}</span>`).join("");
+    return `<div class="hist-dia" id="hd-${dia.data}">
+      <div class="hist-dia-topo" onclick="this.parentElement.classList.toggle('aberto')">
+        <div>
+          <div class="hist-data">${label}</div>
+          ${dia.km > 0 ? `<div class="hist-km">🏃 ${Number(dia.km).toFixed(1)}km</div>` : ""}
+        </div>
+        <div>
+          <div class="hist-pontos">${dia.pontos} pts</div>
+          <div class="hist-qtd">${dia.tarefas.length} tarefas</div>
+        </div>
+      </div>
+      <div class="hist-tarefas">${tags || '<span style="font-size:11px;color:#64748b">—</span>'}</div>
+    </div>`;
+  }).join("");
+}
+
+// ════════════════════════════════════
+// CONFIGURAÇÕES
+// ════════════════════════════════════
+async function carregarConfig() {
+  const d = await chamar({ func: "getConfig", usuario: app.usuario });
+  const nome = d.nome || app.nome || "";
+  document.getElementById("cfg-nome-d").textContent = nome || "—";
+  document.getElementById("cfg-email-d").textContent = app.email || "—";
+  document.getElementById("cfg-av").textContent = nome ? nome.charAt(0).toUpperCase() : "?";
+  document.getElementById("cfg-nome-in").value = nome;
+  const tog = document.getElementById("tog-notif");
+  tog.classList.toggle("ativo", d.notificacoes !== false);
+  tog.onclick = () => {
+    tog.classList.toggle("ativo");
+    if (tog.classList.contains("ativo") && "Notification" in window) Notification.requestPermission();
+    chamar({ func: "salvarConfig", usuario: app.usuario, nome: document.getElementById("cfg-nome-in").value, notificacoes: tog.classList.contains("ativo") });
+  };
+}
+
+document.getElementById("btn-salvar-nome").onclick = async () => {
+  const nome = document.getElementById("cfg-nome-in").value.trim();
+  if (!nome) return;
+  await chamar({ func: "salvarConfig", usuario: app.usuario, nome, notificacoes: document.getElementById("tog-notif").classList.contains("ativo") });
+  app.nome = nome;
+  localStorage.setItem("nome", nome);
+  document.getElementById("cfg-nome-d").textContent = nome;
+  document.getElementById("cfg-av").textContent = nome.charAt(0).toUpperCase();
+  const ok = document.getElementById("cfg-ok");
+  ok.style.display = "block";
+  setTimeout(() => ok.style.display = "none", 2500);
+};
+
+// ════════════════════════════════════
+// INIT
+// ════════════════════════════════════
+(async function() {
+  if (app.usuario) {
+    mostrarLoader("Verificando sessão...");
+    const d = await chamar({ func: "getDashboard", usuario: app.usuario });
+    esconderLoader();
+    if (d.status === "ok") { iniciarApp(); return; }
+    localStorage.clear(); app.usuario = null;
+  }
+  esconderLoader();
+})();
+</script>
 </body>
 </html>
